@@ -12,7 +12,6 @@ require 'rocket_navigation/renderer'
 
 if defined?(Rails)
   require "rocket_navigation/railtie"
-  require "rocket_navigation/rails_integration"
 end
 
 module RocketNavigation

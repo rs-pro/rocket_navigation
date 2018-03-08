@@ -49,8 +49,9 @@ module RocketNavigation
     #
     # The options are the same as in the view's render_navigation call
     # (they get passed on)
-    def render(options = {})
-      renderer_instance(options).render(self)
+    def render(view_context, options = {})
+      @view_context = view_context
+      renderer_instance(view_context, options).render(self)
     end
 
     # Returns true if any of this container's items is selected.
@@ -82,7 +83,7 @@ module RocketNavigation
     end
 
     def renderer_instance(options)
-      return renderer.new(options) unless options[:renderer]
+      return renderer.new(view_context, options) unless options[:renderer]
 
       if options[:renderer].is_a?(Symbol)
         registered_renderer = SimpleNavigation.registered_renderers[options[:renderer]]

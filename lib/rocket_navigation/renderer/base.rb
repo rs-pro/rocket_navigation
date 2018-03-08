@@ -11,9 +11,10 @@ module RocketNavigation
 
       attr_reader :options
 
-      def_delegators :link_to, :content_tag
+      def_delegators @view_context, :link_to, :content_tag
 
-      def initialize(options) #:nodoc:
+      def initialize(view_context, options) #:nodoc:
+        @view_context = view_context
         @options = options
       end
 

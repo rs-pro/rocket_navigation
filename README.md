@@ -11,7 +11,8 @@ Changes include:
 2. Supports only Rails, support for sinatra/paradino is removed.
 3. Defining navigation via magic eval-loaded config file is not available, use real code.
 4. Much simpler and more configurable at the same time.
-5. Add highlight by controller \ action
+5. Add many additional highlight options from [active_link_to](https://github.com/comfy/active_link_to) gem
+6. Add ability to set CSS classes and container DOM attributes on render
 
 ## Installation
 
@@ -70,7 +71,10 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/rs-pro
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-Parts of code Copyright (c) 2017 codeplant GmbH - used under [MIT License](https://github.com/codeplant/simple-navigation/blob/master/LICENSE)
+
+Parts of code Copyright (c) 2017 codeplant GmbH - [MIT License](https://github.com/codeplant/simple-navigation/blob/master/LICENSE)
+
+Uses code from [active_link_to](https://github.com/comfy/active_link_to) - Copyright (c) 2009-17 Oleg Khabarov - [MIT License](https://github.com/comfy/active_link_to/blob/master/LICENSE)
 
 ## Code of Conduct
 
