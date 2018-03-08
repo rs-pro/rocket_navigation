@@ -124,7 +124,7 @@ module RocketNavigation
       return renderer.new(self, options) unless options[:renderer]
 
       if options[:renderer].is_a?(Symbol)
-        registered_renderer = SimpleNavigation.registered_renderers[options[:renderer]]
+        registered_renderer = RocketNavigation.registered_renderers[options[:renderer]]
         registered_renderer.new(self, options)
       else
         options[:renderer].new(self, options)

@@ -40,8 +40,6 @@ module RocketNavigation
     #   tree (always open). This is useful for javascript menus like Superfish.
     # * <tt>:items</tt> - you can specify the items directly (e.g. if items are
     #   dynamically generated from database).
-    #   See SimpleNavigation::ItemsProvider for documentation on what to
-    #   provide as items.
     # * <tt>:renderer</tt> - specify the renderer to be used for rendering the
     #   navigation. Either provide the Class or a symbol matching a registered
     #   renderer. Defaults to :list (html list renderer).

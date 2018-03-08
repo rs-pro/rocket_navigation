@@ -14,10 +14,12 @@ module RocketNavigation
     # element.
     class Breadcrumbs < RocketNavigation::Renderer::Base
       def render(item_container)
-        content = a_tags(item_container)
+        content = ActiveSupport::SafeBuffer.new
+        content << prefix_for(content)
+        content << a_tags(item_container)
         content_tag(
           :div,
-          prefix_for(content) + content,
+          content,
           container_html
         )
       end

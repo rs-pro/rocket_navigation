@@ -50,7 +50,7 @@ module RocketNavigation
     end
 
     def active_leaf?
-      @active_leaf ||= selected_by_condition?
+      @active_leaf ||= selected_by_condition? && !selected_by_subnav?
     end
 
     # Returns the :highlights_on option as set at initialization

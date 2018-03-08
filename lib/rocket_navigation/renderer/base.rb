@@ -19,7 +19,7 @@ module RocketNavigation
       end
 
       def selected_class(type)
-        container.selected_class[type] || options[:selected_class][type]
+        container.selected_class[type] || (options[:selected_class] || {})[type]
       end
 
       def container_html
@@ -44,9 +44,10 @@ module RocketNavigation
           classes.push(selected_class(:branch))
         end
 
-        base_item_html.except(:class).merge({
-          class: classes.reject { |c| c.nil? }
-        })
+        ret = base_item_html.except(:class)
+        classes = classes.reject { |c| c.nil? }
+        ret.merge!({class: classes}) unless classes.blank?
+        ret
       end
 
       # override this method if needed
@@ -64,15 +65,12 @@ module RocketNavigation
           classes.push(selected_class(:link))
         end
         ret = base_link_html.except(:class)
-        ret.merge!({
-          class: classes.reject { |c| c.nil? }
-        })
 
-        unless item.method.blank?
-          ret.merge!({
-            method: method
-          })
-        end
+        ret.merge!({ method: method }) unless item.method.blank?
+
+        classes = classes.reject { |c| c.nil? }
+        ret.merge!({class: classes}) unless classes.blank?
+
         ret
       end
 

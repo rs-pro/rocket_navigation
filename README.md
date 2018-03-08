@@ -104,7 +104,7 @@ view:
 ```
 = render_navigation menu_options, &navigation(:main)
 = render_navigation no_default_classes: true, &navigation(:main)
-
+= render_navigation renderer: :breadcrumbs, no_default_classes: true, prefix: "You are here: ", static_leaf: true, join_with: " &rarr; ".html_safe, &extra_nav
 ```
 
 Same options could be defined on a container when defining menu:

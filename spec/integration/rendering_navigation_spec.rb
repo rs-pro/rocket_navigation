@@ -1,6 +1,5 @@
 RSpec.feature 'Rendering navigation' do
   background do
-    SimpleNavigation.set_env(RailsApp::Application.root, 'test')
   end
 
   scenario 'Rendering basic navigation', type: :feature do
