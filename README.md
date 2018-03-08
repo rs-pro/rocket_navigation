@@ -1,6 +1,9 @@
 # RocketNavigation
 
 [![Build Status](https://travis-ci.org/rs-pro/rocket_navigation.svg?branch=master)](https://travis-ci.org/rs-pro/rocket_navigation)
+[![Gem Version](https://badge.fury.io/rb/rocket_navigation.svg)](https://badge.fury.io/rb/rocket_navigation)
+[![Maintainability](https://api.codeclimate.com/v1/badges/13260d4bf2e5969a12c6/maintainability)](https://codeclimate.com/github/rs-pro/rocket_navigation/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/13260d4bf2e5969a12c6/test_coverage)](https://codeclimate.com/github/rs-pro/rocket_navigation/test_coverage)
 
 # WORK IN PROGRESS
 # Currently alpha qualiy, use at your own risk.

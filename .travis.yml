@@ -8,7 +8,7 @@ notifications:
 
 env:
   global:
-    - CC_TEST_REPORTER_ID=f23ba257d0a12c588551991b4377e3eb218c1ff80050bc48c6b18c49ca16cb62
+    - CC_TEST_REPORTER_ID=4f71f6b01a6f60210b2295b71ba83750eeea15e62362ca4428982b0312359b5e
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
