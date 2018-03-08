@@ -1,4 +1,5 @@
 RSpec.describe RocketNavigation::Renderer::Text do
+  let!(:container) { setup_container }
   let!(:navigation) { setup_navigation('nav_id', 'nav_class') }
 
   let(:item) { nil }

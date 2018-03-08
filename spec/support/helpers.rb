@@ -9,9 +9,10 @@ module Helpers
     container
   end
 
-  def setup_container(dom_id, dom_class)
+  def setup_container(dom_id = nil, dom_class = nil)
     container = RocketNavigation::ItemContainer.new(1)
-    container.dom_attributes = {id: dom_id, class: dom_class}
+    container.view_context = ActionView::Base.new
+    container.container_html = {id: dom_id, class: dom_class}
     container
   end
 

@@ -1,7 +1,7 @@
 # RocketNavigation
 
 # WORK IN PROGRESS
-# (NOT WORKING YET)
+# Currently alpha qualiy, use at your own risk.
 
 This gem is heavily inspired by (and uses some code from) [simple-navigation](https://github.com/codeplant/simple-navigation) but it is NOT a drop-in replacement.
 
@@ -18,6 +18,7 @@ Changes include:
 9. Rewritten to use and allow helpers in renderers and to use ActiveSupport::SafeBuffer everywhere in renderers
 10. All css classes are managed in renderers and can be easily overriden from them
 11. Added [breadcrumbs_on_rails](https://github.com/weppos/breadcrumbs_on_rails) integration
+12. expand_all defaults to true, as pretty much all menus are js-based now.
 
 ## Installation
 

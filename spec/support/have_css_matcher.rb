@@ -1,6 +1,6 @@
 RSpec::Matchers.define :have_css do |expected, times|
   match do |actual|
-    selector = expected.css(actual)
+    selector = actual.css(expected)
     if times
       expect(selector.size).to eq times
     else

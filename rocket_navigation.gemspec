@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["glebtv@gmail.com"]
 
   spec.summary       = %q{rocket_navigation is a gem for creating navigation / menu (for Rails).}
-  #spec.description   = %q{}
+  spec.description   = %q{Currently alpha qualiy, use at your own risk.}
   spec.homepage      = "https://github.com/rs-pro/rocket_navigation"
   spec.license       = "MIT"
 

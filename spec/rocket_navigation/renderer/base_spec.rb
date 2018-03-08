@@ -1,5 +1,6 @@
 RSpec.describe RocketNavigation::Renderer::Base do
-  subject(:base) { RocketNavigation::Renderer::Base.new(options) }
+  let!(:container) { setup_container }
+  subject(:base) { RocketNavigation::Renderer::Base.new(container, options) }
 
   let(:options) { Hash.new }
 

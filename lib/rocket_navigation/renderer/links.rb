@@ -30,10 +30,6 @@ module RocketNavigation
       def join_with
         @join_with ||= options[:join_with] || ''.html_safe
       end
-
-      def options_for(item)
-        { method: item.method }.merge(item.html_options)
-      end
     end
   end
 end

@@ -1,12 +1,13 @@
 RSpec.describe RocketNavigation::Renderer::Json do
   describe '#render' do
+    let!(:container) { setup_container }
     let!(:navigation) { setup_navigation('nav_id', 'nav_class') }
 
     let(:item) { :invoices }
     let(:options) {{ level: :all }}
     let(:output) { renderer.render(navigation) }
     let(:parsed_output) { JSON.parse(output) }
-    let(:renderer) { RocketNavigation::Renderer::Json.new(options) }
+    let(:renderer) { RocketNavigation::Renderer::Json.new(container, options) }
 
     before { select_an_item(navigation[item]) if item }
 

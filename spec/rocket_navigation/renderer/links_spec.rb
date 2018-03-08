@@ -1,12 +1,13 @@
 RSpec.describe RocketNavigation::Renderer::Links do
   describe '#render' do
+    let!(:container) { setup_container }
     let!(:navigation) { setup_navigation('nav_id', 'nav_class') }
 
     let(:item) { nil }
     let(:options) {{ level: :all }}
     let(:output) { Nokogiri::HTML::Document.new(raw_output).root }
     let(:raw_output) { renderer.render(navigation) }
-    let(:renderer) { RocketNavigation::Renderer::Links.new(options) }
+    let(:renderer) { RocketNavigation::Renderer::Links.new(container, options) }
 
     before { select_an_item(navigation[item]) if item }
 

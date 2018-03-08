@@ -13,7 +13,7 @@ module RocketNavigation
       def_delegators :container, :view_context
       def_delegators :view_context, :link_to, :content_tag
 
-      def initialize(container, options)
+      def initialize(container, options = {})
         @container = container
         @options = options
       end
@@ -44,7 +44,9 @@ module RocketNavigation
           classes.push(selected_class(:branch))
         end
 
-        base_item_html.except(:class).merge(class: classes)
+        base_item_html.except(:class).merge({
+          class: classes.reject { |c| c.nil? }
+        })
       end
 
       # override this method if needed
@@ -57,17 +59,13 @@ module RocketNavigation
       end
 
       def link_html(item)
-        classes = Array.wrap(link_item_html[:class] || [])
+        classes = Array.wrap(base_link_html[:class] || [])
         if item.selected?
-          classes.push(selected_class(:item))
+          classes.push(selected_class(:link))
         end
-        if item.active_branch?
-          classes.push(selected_class(:branch))
-        end
-
-        ret = link_item_html.except(:class)
+        ret = base_link_html.except(:class)
         ret.merge!({
-          class: classes
+          class: classes.reject { |c| c.nil? }
         })
 
         unless item.method.blank?
@@ -84,7 +82,7 @@ module RocketNavigation
       end
 
       def expand_all?
-        !!options[:expand_all]
+        !options.key?(:expand_all) || options[:expand_all] == false
       end
 
       def level
@@ -148,13 +146,13 @@ module RocketNavigation
       end
 
       # render an item as a non-active link (span)
-      def suppresed_tag_for(item)
-        content_tag('span', item.name, item_html(item).except(:method))
+      def suppressed_tag_for(item)
+        content_tag('span', item.name, link_options(item).except(:method))
       end
 
       # render an item as an active link (a)
       def active_tag_for(item)
-        link_to(item.name, item.url, item_html(item))
+        link_to(item.name, item.url, link_options(item))
       end
     end
   end
