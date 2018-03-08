@@ -56,59 +56,63 @@ module RocketNavigation
     #
     def render_navigation(options = {}, &block)
       container = ItemContainer.new(options)
-      if block_passed?
-        yield :container
+      container.view_context = view_context
+      if block_given?
+        yield container
       end
       container.render(options)
     end
-  end
 
-  # Returns true or false based on the provided path and condition
-  # Possible condition values are:
-  #                  Boolean -> true | false
-  #                   Symbol -> :exclusive | :inclusive
-  #                    Regex -> /regex/
-  #   Controller/Action Pair -> [[:controller], [:action_a, :action_b]]
-  #
-  # Example usage:
-  #
-  #   is_active_link?('/root', true)
-  #   is_active_link?('/root', :exclusive)
-  #   is_active_link?('/root', /^\/root/)
-  #   is_active_link?('/root', ['users', ['show', 'edit']])
-  #
-  def is_active_nav_link?(url, condition = nil)
-    @is_active_link ||= {}
-    @is_active_link[[url, condition]] ||= begin
-      original_url = url
-      url = Addressable::URI::parse(url).path
-      path = request.original_fullpath
-      case condition
-      when :inclusive, nil
-        !path.match(/^#{Regexp.escape(url).chomp('/')}(\/.*|\?.*)?$/).blank?
-      when :exclusive
-        !path.match(/^#{Regexp.escape(url)}\/?(\?.*)?$/).blank?
-      when :exact
-        path == original_url
-      when Proc
-        condition.call(original_url)
-      when Regexp
-        !path.match(condition).blank?
-      when Array
-        controllers = [*condition[0]]
-        actions     = [*condition[1]]
-        (controllers.blank? || controllers.member?(params[:controller])) &&
-        (actions.blank? || actions.member?(params[:action])) ||
-        controllers.any? do |controller, action|
-          params[:controller] == controller.to_s && params[:action] == action.to_s
-        end
-      when TrueClass
-        true
-      when FalseClass
-        false
-      when Hash
-        condition.all? do |key, value|
-          params[key].to_s == value.to_s
+    # Returns true or false based on the provided path and condition
+    # Possible condition values are:
+    #                  Boolean -> true | false
+    #                   Symbol -> :exclusive | :inclusive
+    #                    Regex -> /regex/
+    #   Controller/Action Pair -> [[:controller], [:action_a, :action_b]]
+    #
+    # Example usage:
+    #
+    #   is_active_nav_link?('/root', true)
+    #   is_active_nav_link?('/root', :exclusive)
+    #   is_active_nav_link?('/root', /^\/root/)
+    #   is_active_nav_link?('/root', ['users', ['show', 'edit']])
+    #
+    # Source: https://github.com/comfy/active_link_to/blob/master/lib/active_link_to/active_link_to.rb
+    # Copyright (c) 2009-17 Oleg Khabarov
+    # MIT License
+    def is_active_nav_link?(url, condition = nil)
+      @is_active_link ||= {}
+      @is_active_link[[url, condition]] ||= begin
+        original_url = url
+        url = Addressable::URI::parse(url).path
+        path = request.original_fullpath
+        case condition
+        when :inclusive, nil
+          !path.match(/^#{Regexp.escape(url).chomp('/')}(\/.*|\?.*)?$/).blank?
+        when :exclusive
+          !path.match(/^#{Regexp.escape(url)}\/?(\?.*)?$/).blank?
+        when :exact
+          path == original_url
+        when Proc
+          condition.call(original_url)
+        when Regexp
+          !path.match(condition).blank?
+        when Array
+          controllers = [*condition[0]]
+          actions     = [*condition[1]]
+          (controllers.blank? || controllers.member?(params[:controller])) &&
+          (actions.blank? || actions.member?(params[:action])) ||
+          controllers.any? do |controller, action|
+            params[:controller] == controller.to_s && params[:action] == action.to_s
+          end
+        when TrueClass
+          true
+        when FalseClass
+          false
+        when Hash
+          condition.all? do |key, value|
+            params[key].to_s == value.to_s
+          end
         end
       end
     end

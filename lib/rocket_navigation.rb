@@ -21,15 +21,12 @@ module RocketNavigation
   self.default_renderer = :list
 
   self.registered_renderers = {
-    list:        RocketNavigation::Renderer::List,
-    links:       RocketNavigation::Renderer::Links,
-    breadcrumbs: RocketNavigation::Renderer::Breadcrumbs,
-    text:        RocketNavigation::Renderer::Text,
-    json:        RocketNavigation::Renderer::Json
+    list:                 RocketNavigation::Renderer::List,
+    links:                RocketNavigation::Renderer::Links,
+    breadcrumbs:          RocketNavigation::Renderer::Breadcrumbs,
+    breadcrumbs_on_rails: RocketNavigation::Renderer::BreadcrumbsOnRails,
+    text:                 RocketNavigation::Renderer::Text,
+    json:                 RocketNavigation::Renderer::Json
   }
-
-  def self.init
-    puts "rails booted, loading config"
-  end
 end
 

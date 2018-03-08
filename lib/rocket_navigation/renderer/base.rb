@@ -8,14 +8,42 @@ module RocketNavigation
     # containing items to HTML.
     class Base
       extend Forwardable
-
       attr_reader :options
 
-      def_delegators @view_context, :link_to, :content_tag
+      def_delegators :container, :view_context
+      def_delegators :view_context, :link_to, :content_tag
 
-      def initialize(view_context, options) #:nodoc:
-        @view_context = view_context
+      def initialize(container, options)
+        @container = container
         @options = options
+      end
+
+      def container_html
+        @container_html ||= container.container_html.merge(options[:container_html])
+      end
+
+      def base_item_html
+        @base_item_html ||= container.item_html.merge(options[:item_html])
+      end
+
+      def base_link_html
+        @base_link_html ||= container.link_html.merge(options[:link_html])
+      end
+
+      def selected_class(type)
+        container.selected_class[type] || options[:selected_class][type]
+      end
+
+      def item_html(item)
+        classes = Array.wrap(item[:class] || [])
+        if item.selected?
+          classes.push(selected_class(:item))
+        end
+        if item.active_branch?
+          classes.push(selected_class(:branch))
+        end
+
+        base_item_html.except(:class).merge(class: classes)
       end
 
       def expand_all?
@@ -75,35 +103,21 @@ module RocketNavigation
       # item/renderer conditions.
       def tag_for(item)
         if suppress_link?(item)
-          content_tag('span', item.name, link_options_for(item).except(:method))
+          content_tag('span', item.name, options_for(item).except(:method))
         else
           link_to(item.name, item.url, options_for(item))
         end
       end
 
-      # to allow overriding when link options should be special-cased
-      # (eg. links renderer uses item options for the a-tag rather
-      # than an li-tag).
-      def options_for(item)
-        link_options_for(item)
-      end
-
       # Extracts the options relevant for the generated link
       def link_options_for(item)
-        special_options = {
+        options = {
           method: item.method,
           class: item.selected_class
         }.reject { |_, v| v.nil? }
 
-        link_options = item.link_html_options
-
-        return special_options unless link_options
-
-        opts = special_options.merge(link_options)
-
-        classes = [link_options[:class], item.selected_class]
-        classes = classes.flatten.compact.join(' ')
-        opts[:class] = classes unless classes.empty?
+        options.merge!(item.options[:html]) unless item.options[:html].nil?
+        options.merge!(class: class_for(item))
 
         opts
       end

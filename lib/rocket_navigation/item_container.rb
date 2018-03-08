@@ -1,12 +1,21 @@
 module RocketNavigation
   class ItemContainer
-    attr_accessor :dom_attributes, :renderer
-    attr_reader :view_context, :items, :level
+    attr_accessor :renderer, :view_context
+    attr_reader :items, :level
+
+    attr_accessor :container_html, :item_html, :link_html, :selected_class
+    def default_html_options
+      @container_html = {class: "nav"}
+      @item_html = {class: 'nav-item'}
+      @link_html = {class: 'nav-link'}
+      @selected_class = {branch: "active-branch", item: "active", link: "active"}
+    end
 
     def initialize(level, options = {})
       @level = level
       @items ||= []
       @renderer = RocketNavigation.config.renderer
+      default_html_options
     end
 
     def item(key, name, url = nil, options = {}, &block)
@@ -49,9 +58,8 @@ module RocketNavigation
     #
     # The options are the same as in the view's render_navigation call
     # (they get passed on)
-    def render(view_context, options = {})
-      @view_context = view_context
-      renderer_instance(view_context, options).render(self)
+    def render(options = {})
+      renderer_instance(options).render(self)
     end
 
     # Returns true if any of this container's items is selected.
@@ -83,13 +91,13 @@ module RocketNavigation
     end
 
     def renderer_instance(options)
-      return renderer.new(view_context, options) unless options[:renderer]
+      return renderer.new(self, options) unless options[:renderer]
 
       if options[:renderer].is_a?(Symbol)
         registered_renderer = SimpleNavigation.registered_renderers[options[:renderer]]
-        registered_renderer.new(options)
+        registered_renderer.new(self, options)
       else
-        options[:renderer].new(options)
+        options[:renderer].new(self, options)
       end
     end
   end

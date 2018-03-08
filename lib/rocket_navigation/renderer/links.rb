@@ -17,16 +17,18 @@ module RocketNavigation
     # element.
     class Links < RocketNavigation::Renderer::Base
       def render(item_container)
-        div_content = item_container.items
-                                    .map { |item| tag_for(item) }
-                                    .join(join_with)
-        content_tag :div, div_content, item_container.dom_attributes
+        div_content = ActiveSupport::SafeBuffer.new
+        item_container.items.each_with_index do |item, index|
+          div_content << tag_for(item)
+          unless index == item_container.items.length - 1
+            div_content << join_with
+          end
+        end
+        content_tag :div, div_content, wrapper_html
       end
 
-      protected
-
       def join_with
-        @join_with ||= options[:join_with] || ''
+        @join_with ||= options[:join_with] || ''.html_safe
       end
 
       def options_for(item)

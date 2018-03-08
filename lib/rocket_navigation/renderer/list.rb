@@ -17,25 +17,28 @@ module RocketNavigation
     class List < RocketNavigation::Renderer::Base
       def render(item_container)
         if skip_if_empty? && item_container.empty?
-          ''
+          ''.html_safe
         else
           tag = options[:ordered] ? :ol : :ul
           content = list_content(item_container)
-          content_tag(tag, content, item_container.dom_attributes)
+          content_tag(tag, content, container_html)
         end
       end
 
-      private
+      def render_item(item)
+        li_content = tag_for(item)
+        if include_sub_navigation?(item)
+          li_content << render_sub_navigation_for(item)
+        end
+        content_tag(:li, li_content, item_options)
+      end
 
       def list_content(item_container)
-        item_container.items.map { |item|
-          li_options = item.html_options.except(:link)
-          li_content = tag_for(item)
-          if include_sub_navigation?(item)
-            li_content << render_sub_navigation_for(item)
-          end
-          content_tag(:li, li_content, li_options)
-        }.join
+        ret = ActiveSupport::SafeBuffer.new
+        item_container.items.each do |item|
+          ret << render_item(item)
+        end
+        ret
       end
     end
   end

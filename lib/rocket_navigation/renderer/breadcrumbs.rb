@@ -14,7 +14,7 @@ module RocketNavigation
     # element.
     class Breadcrumbs < RocketNavigation::Renderer::Base
       def render(item_container)
-        content = a_tags(item_container).join(join_with)
+        content = a_tags(item_container)
         content_tag(:div,
                     prefix_for(content) + content,
                     item_container.dom_attributes)
@@ -23,18 +23,21 @@ module RocketNavigation
       protected
 
       def a_tags(item_container)
-        item_container.items.each_with_object([]) do |item, list|
+        list = ActiveSupport::SafeBuffer.new
+        item_container.items.each do |item|
           next unless item.selected?
           list << tag_for(item)
 
           if include_sub_navigation?(item)
-            list.concat a_tags(item.sub_navigation)
+            list << join_with
+            list << a_tags(item.sub_navigation)
           end
         end
+        list
       end
 
       def join_with
-        @join_with ||= options[:join_with] || ' '
+        @join_with ||= options[:join_with] || ' '.html_safe
       end
 
       def suppress_link?(item)

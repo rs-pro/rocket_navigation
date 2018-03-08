@@ -7,12 +7,17 @@ This gem is heavily inspired by (and uses some code from) [simple-navigation](ht
 
 Changes include:
 
-1. Thread safety
-2. Supports only Rails, support for sinatra/paradino is removed.
-3. Defining navigation via magic eval-loaded config file is not available, use real code.
-4. Much simpler and more configurable at the same time.
-5. Add many additional highlight options from [active_link_to](https://github.com/comfy/active_link_to) gem
-6. Add ability to set CSS classes and container DOM attributes on render
+1. Simple with no dark magic involved
+2. Thread safe with no mutexes. (simple_navigation's render_navigation can render incomplete navs and not render any items at all under multithread load due to app-global config, which is used internally even if proc or items passed)
+3. Supports only Rails, support for sinatra/paradino is removed.
+4. Defining navigation via magic eval-loaded config file is not available, use real code.
+5. Much simpler and more configurable at the same time.
+6. Add many additional highlight options from [active_link_to](https://github.com/comfy/active_link_to) gem
+7. Add ability to set CSS classes and container DOM attributes on render
+8. ID autogeneration is removed
+9. Rewritten to use and allow helpers in renderers and to use ActiveSupport::SafeBuffer everywhere in renderers
+10. All css classes are managed in renderers and can be easily overriden from them
+11. Added [breadcrumbs_on_rails](https://github.com/weppos/breadcrumbs_on_rails) integration
 
 ## Installation
 
@@ -53,10 +58,73 @@ view:
 = render_navigation level: 1..2, &navigation(:main)
 ```
 
+## More docs
+
+Basic menu usage is the same as simple-navigation
+
 See https://github.com/codeplant/simple-navigation/wiki/Dynamic-Navigation-Items
 
 This gem aims to be a drop-in replacement for this mode, including custom renderer code and api.
 Any incomatibility can be reported as a bug.
+
+Most renderers should be compatible out of the box, or require minimal changes due to ActiveSupport::SafeBuffer usage instead of .html_safe.
+
+## Setting HTML attributes
+
+on render:
+
+```ruby
+# helper
+def menu_options
+  {
+    container_html: {class: "nav"},
+    item_html: {
+      class: 'nav nav-item'
+    },
+    link_html: {
+      class: %w(link nav-link),
+      rel: "nofollow",
+    },
+    selected_class: {
+      leaf: "selected-leaf",
+      item: "selected-li",
+      link: "selected-a"
+    }
+  }
+end
+```
+
+view:
+```
+= render_navigation menu_options, &navigation(:main)
+```
+
+Same options could be defined on a container when defining menu:
+```ruby
+def navigation(kind = :main)
+  proc do |primary|
+    primary.container_html = {class: "nav"}
+    primary.item_html = {class: 'nav-item'}
+    primary.link_html = {class: 'nav-link'}
+    primary.selected_class = {branch: "active-branch", item: "active", link: "active"}
+    primary.item :home, 'Home', root_path, item_html: {class: "other"}, link_html: {class: "other"}
+    primary.item :two, 'Two', root_path, item_html: {class: "more two"}, link_html: {class: "two", method: :post}
+  end
+end
+```
+
+
+HTML options priority - item, renderer, default
+
+## BreadcrumbsOnRails integration
+
+Just render with a breadcrumbs_on_rails renderer.
+Returns nothing, calls add_breadcrumb instead.
+Should be called before ```= render_breadcrumbs```, i.e. in controller
+
+```
+render_navigation renderer: :breadcrumbs_on_rails, &navigation(:main)
+```
 
 ## Development
 
