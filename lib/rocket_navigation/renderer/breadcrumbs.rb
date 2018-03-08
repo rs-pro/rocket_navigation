@@ -15,9 +15,11 @@ module RocketNavigation
     class Breadcrumbs < RocketNavigation::Renderer::Base
       def render(item_container)
         content = a_tags(item_container)
-        content_tag(:div,
-                    prefix_for(content) + content,
-                    item_container.dom_attributes)
+        content_tag(
+          :div,
+          prefix_for(content) + content,
+          container_html
+        )
       end
 
       protected
@@ -41,7 +43,7 @@ module RocketNavigation
       end
 
       def suppress_link?(item)
-        super || (options[:static_leaf] && item.active_leaf_class)
+        super || (options[:static_leaf] && item.active_leaf?)
       end
 
       def prefix_for(content)
@@ -49,19 +51,6 @@ module RocketNavigation
           options[:prefix]
         else
           ''
-        end
-      end
-
-      # Extracts the options relevant for the generated link
-      #
-      def link_options_for(item)
-        if options[:allow_classes_and_ids]
-          opts = super
-          opts[:id] &&= "breadcrumb_#{opts[:id]}"
-          opts
-        else
-          html_options = item.html_options.except(:class, :id)
-          { method: item.method }.merge(html_options)
         end
       end
     end

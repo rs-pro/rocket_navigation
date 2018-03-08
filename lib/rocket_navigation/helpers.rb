@@ -55,7 +55,7 @@ module RocketNavigation
     #   end
     #
     def render_navigation(options = {}, &block)
-      container = ItemContainer.new(options)
+      container = ItemContainer.new(1, options)
       container.view_context = view_context
       if block_given?
         yield container
@@ -98,8 +98,8 @@ module RocketNavigation
         when Regexp
           !path.match(condition).blank?
         when Array
-          controllers = [*condition[0]]
-          actions     = [*condition[1]]
+          controllers = Array.wrap(condition[0])
+          actions     = Array.wrap(condition[1])
           (controllers.blank? || controllers.member?(params[:controller])) &&
           (actions.blank? || actions.member?(params[:action])) ||
           controllers.any? do |controller, action|

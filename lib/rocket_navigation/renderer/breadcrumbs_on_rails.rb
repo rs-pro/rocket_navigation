@@ -17,11 +17,8 @@ module RocketNavigation
         item_container.items.each do |item|
           next unless item.selected?
           add_breadcrumb(item.name, item.url, item_html(item))
-          list << tag_for(item)
-
           if include_sub_navigation?(item)
-            list << join_with
-            list << a_tags(item.sub_navigation)
+            render(item.sub_navigation)
           end
         end
       end

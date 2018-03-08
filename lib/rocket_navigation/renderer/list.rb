@@ -30,7 +30,7 @@ module RocketNavigation
         if include_sub_navigation?(item)
           li_content << render_sub_navigation_for(item)
         end
-        content_tag(:li, li_content, item_options)
+        content_tag(:li, li_content, item_options(item))
       end
 
       def list_content(item_container)

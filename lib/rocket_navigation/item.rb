@@ -49,6 +49,10 @@ module RocketNavigation
       @active_branch ||= selected_by_subnav? && !selected_by_condition?
     end
 
+    def active_leaf?
+      @active_leaf ||= selected_by_condition?
+    end
+
     # Returns the :highlights_on option as set at initialization
     def highlights_on
       @highlights_on ||= options[:highlights_on]
@@ -97,7 +101,7 @@ module RocketNavigation
     def setup_sub_navigation(items = nil, &sub_nav_block)
       return unless sub_nav_block || items
 
-      self.sub_navigation = ItemContainer.new(container.level + 1)
+      self.sub_navigation = container.new_child
 
       if sub_nav_block
         sub_nav_block.call sub_navigation

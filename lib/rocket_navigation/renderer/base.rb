@@ -8,7 +8,7 @@ module RocketNavigation
     # containing items to HTML.
     class Base
       extend Forwardable
-      attr_reader :options
+      attr_reader :container, :options
 
       def_delegators :container, :view_context
       def_delegators :view_context, :link_to, :content_tag
@@ -18,24 +18,25 @@ module RocketNavigation
         @options = options
       end
 
-      def container_html
-        @container_html ||= container.container_html.merge(options[:container_html])
-      end
-
-      def base_item_html
-        @base_item_html ||= container.item_html.merge(options[:item_html])
-      end
-
-      def base_link_html
-        @base_link_html ||= container.link_html.merge(options[:link_html])
-      end
-
       def selected_class(type)
         container.selected_class[type] || options[:selected_class][type]
       end
 
+      def container_html
+        @container_html ||= container.container_html.merge(options[:container_html] || {})
+      end
+
+      # override this method if needed
+      def container_options
+        container_html
+      end
+
+      def base_item_html
+        @base_item_html ||= container.item_html.merge(options[:item_html] || {})
+      end
+
       def item_html(item)
-        classes = Array.wrap(item[:class] || [])
+        classes = Array.wrap(base_item_html[:class] || [])
         if item.selected?
           classes.push(selected_class(:item))
         end
@@ -44,6 +45,42 @@ module RocketNavigation
         end
 
         base_item_html.except(:class).merge(class: classes)
+      end
+
+      # override this method if needed
+      def item_options(item)
+        item_html(item)
+      end
+
+      def base_link_html
+        @base_link_html ||= container.link_html.merge(options[:link_html] || {})
+      end
+
+      def link_html(item)
+        classes = Array.wrap(link_item_html[:class] || [])
+        if item.selected?
+          classes.push(selected_class(:item))
+        end
+        if item.active_branch?
+          classes.push(selected_class(:branch))
+        end
+
+        ret = link_item_html.except(:class)
+        ret.merge!({
+          class: classes
+        })
+
+        unless item.method.blank?
+          ret.merge!({
+            method: method
+          })
+        end
+        ret
+      end
+
+      # override this method if needed
+      def link_options(item)
+        link_html(item)
       end
 
       def expand_all?
@@ -75,15 +112,16 @@ module RocketNavigation
         fail NotImplementedError, 'subclass responsibility'
       end
 
-      protected
-
       def consider_sub_navigation?(item)
         return false unless item.sub_navigation
 
         case level
-        when :all then true
-        when Range then item.sub_navigation.level <= level.max
-        else false
+        when :all
+          true
+        when Range
+          item.sub_navigation.level <= level.max
+        else
+          false
         end
       end
 
@@ -103,23 +141,20 @@ module RocketNavigation
       # item/renderer conditions.
       def tag_for(item)
         if suppress_link?(item)
-          content_tag('span', item.name, options_for(item).except(:method))
+          suppressed_tag_for(item)
         else
-          link_to(item.name, item.url, options_for(item))
+          active_tag_for(item)
         end
       end
 
-      # Extracts the options relevant for the generated link
-      def link_options_for(item)
-        options = {
-          method: item.method,
-          class: item.selected_class
-        }.reject { |_, v| v.nil? }
+      # render an item as a non-active link (span)
+      def suppresed_tag_for(item)
+        content_tag('span', item.name, item_html(item).except(:method))
+      end
 
-        options.merge!(item.options[:html]) unless item.options[:html].nil?
-        options.merge!(class: class_for(item))
-
-        opts
+      # render an item as an active link (a)
+      def active_tag_for(item)
+        link_to(item.name, item.url, item_html(item))
       end
     end
   end

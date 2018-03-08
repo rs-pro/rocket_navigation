@@ -12,7 +12,7 @@ module RocketNavigation
 
       def list(item_container)
         item_container.items.keep_if(&:selected?).map do |item|
-          [item.name(apply_generator: false)] +
+          [item.name] +
           (include_sub_navigation?(item) ? list(item.sub_navigation) : [])
         end
       end

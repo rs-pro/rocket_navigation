@@ -1,25 +1,41 @@
 module RocketNavigation
   class ItemContainer
-    attr_accessor :renderer, :view_context
+    attr_accessor :renderer, :view_context, :options
     attr_reader :items, :level
 
     attr_accessor :container_html, :item_html, :link_html, :selected_class
+
     def default_html_options
-      @container_html = {class: "nav"}
-      @item_html = {class: 'nav-item'}
-      @link_html = {class: 'nav-link'}
-      @selected_class = {branch: "active-branch", item: "active", link: "active"}
+      if options[:no_default_classes]
+        @container_html = {}
+        @item_html = {}
+        @link_html = {}
+        @selected_class = {}
+      else
+        @container_html = {class: "nav"}
+        @item_html = {class: 'nav-item'}
+        @link_html = {class: 'nav-link'}
+        @selected_class = {branch: "active-branch", item: "active", link: "active"}
+      end
     end
 
-    def initialize(level, options = {})
+    def initialize(level = 1, options = {})
       @level = level
       @items ||= []
+      @options = options
       @renderer = RocketNavigation.config.renderer
       default_html_options
     end
 
+    def new_child
+      child = ItemContainer.new(level + 1, options)
+      child.view_context = view_context
+      child
+    end
+
     def item(key, name, url = nil, options = {}, &block)
       return unless should_add_item?(options)
+      key = url if key.nil?
       item = Item.new(self, key, name, url, options, &block)
       add_item item, options
     end
@@ -77,6 +93,20 @@ module RocketNavigation
     # Returns true if there are no items defined for this container.
     def empty?
       items.empty?
+    end
+
+    def inspect
+"#<RocketNavigation::ItemContainer:#{object_id}
+  @renderer=#{@renderer.inspect}
+  @options=#{@options.inspect}
+  @items=#{@items.inspect}
+  @level=#{@level.inspect}
+  @container_html=#{@container_html.inspect}
+  @item_html=#{@item_html.inspect}
+  @link_html=#{@link_html.inspect}
+  @selected_class=#{@selected_class.inspect}
+  @view_context=#{view_context.nil? ? nil : "[rails view context, hidden from inspect]"}
+>"
     end
 
     private

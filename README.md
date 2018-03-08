@@ -44,7 +44,7 @@ helper:
 def navigation(kind = :main)
   proc do |primary|
     primary.item :home, 'Home', root_path do |sub_nav|
-      sub_nav.item(:people, 'People', people_path, highlights_on: {controller: :people, action: :index}) do |person|
+      sub_nav.item(:people, 'People', people_path, highlights_on: [:people, :show]) do |person|
         person.item :person, @person.try(:name), url_for(@person), highlights_on: /people\/[0-9]+/
         person.item :new_person, 'New Person', new_person_path, highlights_on: /people\/new$/
       end
@@ -97,6 +97,8 @@ end
 view:
 ```
 = render_navigation menu_options, &navigation(:main)
+= render_navigation no_default_classes: true, &navigation(:main)
+
 ```
 
 Same options could be defined on a container when defining menu:

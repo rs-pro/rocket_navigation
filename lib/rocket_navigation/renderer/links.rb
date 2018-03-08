@@ -24,7 +24,7 @@ module RocketNavigation
             div_content << join_with
           end
         end
-        content_tag :div, div_content, wrapper_html
+        content_tag :div, div_content, container_html
       end
 
       def join_with
