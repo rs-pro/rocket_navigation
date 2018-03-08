@@ -1,5 +1,7 @@
 # RocketNavigation
 
+[![Build Status](https://travis-ci.org/rs-pro/rocket_navigation.svg?branch=master)](https://travis-ci.org/rs-pro/rocket_navigation)
+
 # WORK IN PROGRESS
 # Currently alpha qualiy, use at your own risk.
 
