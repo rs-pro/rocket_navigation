@@ -66,7 +66,7 @@ module RocketNavigation
         end
         ret = base_link_html.except(:class)
 
-        ret.merge!({ method: method }) unless item.method.blank?
+        ret.merge!({ method: item.method }) unless item.method.blank?
 
         classes = classes.reject { |c| c.nil? }
         ret.merge!({class: classes}) unless classes.blank?
