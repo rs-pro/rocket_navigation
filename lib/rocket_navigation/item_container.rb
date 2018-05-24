@@ -122,7 +122,6 @@ module RocketNavigation
 
     def renderer_instance(options)
       return renderer.new(self, options) unless options[:renderer]
-
       if options[:renderer].is_a?(Symbol)
         registered_renderer = RocketNavigation.registered_renderers[options[:renderer]]
         registered_renderer.new(self, options)

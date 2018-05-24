@@ -79,6 +79,16 @@ module RocketNavigation
       url == '/'
     end
 
+    def inspect
+"#<RocketNavigation::Item:#{object_id}
+  @key=#{@key}
+  @name=#{@name}
+  @sub_navigation=#{@sub_navigation.inspect}
+  @url=#{@url.inspect}
+  @options=#{@options.inspect}
+>"
+    end
+
     private
 
     attr_accessor :container,
