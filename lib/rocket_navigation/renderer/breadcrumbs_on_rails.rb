@@ -16,6 +16,8 @@ module RocketNavigation
       def render(item_container)
         item_container.items.each do |item|
           next unless item.selected?
+          puts "breadcrumb"
+          p item
           add_breadcrumb(item.name, item.url, item_html(item))
           if include_sub_navigation?(item)
             render(item.sub_navigation)
