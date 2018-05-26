@@ -108,6 +108,11 @@ view:
 = render_navigation renderer: :breadcrumbs, no_default_classes: true, prefix: "You are here: ", static_leaf: true, join_with: " &rarr; ".html_safe, &extra_nav
 ```
 
+bootstrap example:
+```
+= render_navigation container_html: {class: "nav navbar-nav"}, renderer: :bootstrap, &navigation(:main)
+```
+
 Same options could be defined on a container when defining menu:
 ```ruby
 def navigation(kind = :main)
@@ -120,6 +125,7 @@ def navigation(kind = :main)
     primary.item :two, 'Two', root_path, item_html: {class: "more two"}, link_html: {class: "two", method: :post}
   end
 end
+helper_method :navigation
 ```
 
 
