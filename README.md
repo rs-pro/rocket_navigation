@@ -5,8 +5,15 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/13260d4bf2e5969a12c6/maintainability)](https://codeclimate.com/github/rs-pro/rocket_navigation/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/13260d4bf2e5969a12c6/test_coverage)](https://codeclimate.com/github/rs-pro/rocket_navigation/test_coverage)
 
-# WORK IN PROGRESS
-# Currently alpha qualiy, use at your own risk.
+# Status
+
+Currently beta quality, but we already use it in production for some projects.
+
+Lots of tests (which were copied and adapted from SimpleNavigation) are failing, but the gem itself works and is somewhat tested in real world projects as a replacement for SimpleNavigation.
+
+But anyway use at your own risk.
+
+# About
 
 This gem is heavily inspired by (and uses some code from) [simple-navigation](https://github.com/codeplant/simple-navigation) but it is NOT a drop-in replacement.
 
