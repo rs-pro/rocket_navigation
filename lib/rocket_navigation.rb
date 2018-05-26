@@ -23,6 +23,7 @@ module RocketNavigation
   self.registered_renderers = {
     list:                 RocketNavigation::Renderer::List,
     links:                RocketNavigation::Renderer::Links,
+    bootstrap:            RocketNavigation::Renderer::Bootstrap,
     breadcrumbs:          RocketNavigation::Renderer::Breadcrumbs,
     breadcrumbs_on_rails: RocketNavigation::Renderer::BreadcrumbsOnRails,
     text:                 RocketNavigation::Renderer::Text,

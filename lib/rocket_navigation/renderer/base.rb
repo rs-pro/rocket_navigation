@@ -35,7 +35,11 @@ module RocketNavigation
         @base_item_html ||= container.item_html.merge(options[:item_html] || {})
       end
 
-      def item_html(item)
+      # override in renderer if needed
+      def item_extra_classes(item)
+        []
+      end
+      def item_classes(item)
         classes = Array.wrap(base_item_html[:class] || [])
         if item.selected?
           classes.push(selected_class(:item))
@@ -43,9 +47,13 @@ module RocketNavigation
         if item.active_branch?
           classes.push(selected_class(:branch))
         end
+        classes = classes.reject { |c| c.nil? } + item_extra_classes(item)
+      end
 
+      def item_html(item)
         ret = base_item_html.except(:class)
-        classes = classes.reject { |c| c.nil? }
+
+        classes = item_classes(item)
         ret.merge!({class: classes}) unless classes.blank?
         ret
       end
@@ -59,16 +67,24 @@ module RocketNavigation
         @base_link_html ||= container.link_html.merge(options[:link_html] || {})
       end
 
-      def link_html(item)
+      # override in renderer if needed
+      def link_extra_classes(item)
+        []
+      end
+      def link_classes(item)
         classes = Array.wrap(base_link_html[:class] || [])
         if item.selected?
           classes.push(selected_class(:link))
         end
+        classes = classes.reject { |c| c.nil? } + link_extra_classes(item)
+      end
+
+      def link_html(item)
         ret = base_link_html.except(:class)
 
         ret.merge!({ method: item.method }) unless item.method.blank?
 
-        classes = classes.reject { |c| c.nil? }
+        classes = link_classes(item)
         ret.merge!({class: classes}) unless classes.blank?
 
         ret

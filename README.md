@@ -24,6 +24,7 @@ Changes include:
 10. All css classes are managed in renderers and can be easily overriden from them
 11. Added [breadcrumbs_on_rails](https://github.com/weppos/breadcrumbs_on_rails) integration
 12. expand_all defaults to true, as pretty much all menus are js-based now.
+13. Includes bootstrap 4 renderer
 
 ## Installation
 

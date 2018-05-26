@@ -12,6 +12,8 @@ module RocketNavigation
     def_delegators :container, :view_context
     def_delegators :view_context, :is_active_nav_link?
 
+    def_delegators :container, :level
+
     # see ItemContainer#item
     #
     # The subnavigation (if any) is either provided by a block or
