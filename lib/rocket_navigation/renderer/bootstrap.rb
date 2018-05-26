@@ -47,6 +47,7 @@ module RocketNavigation
       def expand_all?
         true
       end
+
       def consider_sub_navigation?(item)
         return false unless item.sub_navigation
         true
@@ -78,12 +79,6 @@ module RocketNavigation
         else
           super(item)
         end
-      end
-
-      def render_sub_navigation_for(item)
-        opts = options.dup
-        p opts
-        item.sub_navigation.render(opts)
       end
     end
   end
