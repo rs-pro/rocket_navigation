@@ -1,5 +1,9 @@
 # RocketNavigation
 
+Master repository has moved to gitlab, all new code will be there:
+
+https://gitlab.com/rocket-science/rocket_navigation
+
 [![Build Status](https://travis-ci.org/rs-pro/rocket_navigation.svg?branch=master)](https://travis-ci.org/rs-pro/rocket_navigation)
 [![Gem Version](https://badge.fury.io/rb/rocket_navigation.svg)](https://badge.fury.io/rb/rocket_navigation)
 [![Maintainability](https://api.codeclimate.com/v1/badges/13260d4bf2e5969a12c6/maintainability)](https://codeclimate.com/github/rs-pro/rocket_navigation/maintainability)
