@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{rocket_navigation is a gem for creating navigation / menu (for Rails).}
   spec.description   = %q{Currently alpha qualiy, use at your own risk.}
-  spec.homepage      = "https://github.com/rs-pro/rocket_navigation"
+  spec.homepage      = "https://gitlab.com/rocket-science/rocket_navigation"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
